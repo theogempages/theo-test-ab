@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Narrow Jumbotron Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        // Hàm để thiết lập cookie
+      function setCookie(cname, cvalue, exmins) {
+          const d = new Date();
+          d.setTime(d.getTime() + (exmins * 5 * 60 * 1000));
+          const expires = "expires="+ d.toUTCString();
+          document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      }
+      
+      // Hàm để lấy giá trị của cookie
+      function getCookie(cname) {
+          const name = cname + "=";
+          const decodedCookie = decodeURIComponent(document.cookie);
+          const ca = decodedCookie.split(';');
+          for(let i = 0; i < ca.length; i++) {
+              let c = ca[i];
+              while (c.charAt(0) === ' ') {
+                  c = c.substring(1);
+              }
+              if (c.indexOf(name) === 0) {
+                  return c.substring(name.length, c.length);
+              }
+          }
+          return "";
+      }
+      
+      // Hàm chọn ngẫu nhiên một trong hai đoạn văn bản dựa trên cookie
+      function chooseText() {
+          const text1 = "This is Original text";
+          const text2 = "This is Variant text";
+      
+          // Kiểm tra xem cookie đã tồn tại chưa
+          let choice = getCookie("textChoice");
+          if (choice !== "1" && choice !== "2") {
+              // Nếu cookie không tồn tại hoặc không hợp lệ, chọn ngẫu nhiên
+              choice = Math.random() < 0.5 ? "1" : "2";
+              // Lưu lựa chọn vào cookie
+              setCookie("textChoice", choice, 1);
+          }
+      
+          // Trả về đoạn văn bản tương ứng với lựa chọn
+          return choice === "1" ? text1 : text2;
+      }
+        
+      function clearCookie(cookieName) {
+          document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      }
+      
+      const clearBtn = document.querySelector("#clearBtn");
+      clearBtn.addEventListener("click", function(){
+        clearCookie("textChoice");
+        console.log("cleared textChoice");
+        window.location.reload();
+      })
+      
+      // Sử dụng hàm chooseText() để lấy đoạn văn bản ngẫu nhiên và in ra
+      console.log(chooseText());
+      const control_text = document.querySelector("#control_text");
+      control_text.innerHTML = chooseText()
+      
+        
+      
+      </script>
+  </head>
+  <body>
+    <center>
+        <h1 id="control_text">test text</h1>
+        <button id="clearBtn" type="button" class="button">Clear cookie and reload</button>
+      </center>
+  </body>
+</html>
